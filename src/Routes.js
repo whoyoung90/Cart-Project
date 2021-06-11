@@ -6,7 +6,7 @@ function Routes() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" component={Cart} />
+        <Route exact path="/cart" component={Cart} />
       </Switch>
     </Router>
   );
