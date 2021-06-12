@@ -1,19 +1,15 @@
 import React from 'react';
-import { deliveryTypes } from '../data';
 import styled from 'styled-components';
 
-function DropDown() {
-  const DeliverCost = el => {
-    console.log(el.target.value);
-  };
+function DropDown({ deliveryTypes, deliverCost }) {
   return (
-    <SelectBox onChange={DeliverCost}>
+    <SelectBox onChange={deliverCost}>
       <OptionDefault value="" disabled selected hidden>
         선택해주세요.
       </OptionDefault>
       {deliveryTypes.map((el, idx) => (
         <Option key={idx} value={el.delivery_price}>
-          {el.name} {el.delivery_price}원
+          {el.name} {el.delivery_price.toLocaleString()}원
         </Option>
       ))}
     </SelectBox>
