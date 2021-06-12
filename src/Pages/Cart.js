@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import DropDown from '../hooks/DropDown';
+import DropDown from '../Components/DropDown';
 import CheckBox from '../hooks/CheckBox';
 import CartItem from '../hooks/CartItem';
+import OrderButton from '../Components/OrderButton';
 import styled from 'styled-components';
 import { css } from 'styled-components';
 
@@ -20,24 +21,24 @@ function Cart({ flowers, deliveryTypes, filterItem }) {
     }, 0)
   );
 
-  // const foo = () => {
-  //   setPrice(
-  //     flowers.reduce((acc, cur) => {
-  //       return (acc += cur.product_price * cur?.count);
-  //     }, 0)
-  //   );
-  // };
-
   const deliverCost = el => {
     setDelivery(Number(el.target.value));
   };
 
-  const PlusAll = () => {
+  const PlusAmount = e => {
     setAmount(amount + 1);
   };
 
-  const MinusAll = () => {
+  const MinusAmount = e => {
     setAmount(amount - 1);
+  };
+
+  const PlusPrice = e => {
+    setPrice(price + e);
+  };
+
+  const MinusPrice = e => {
+    setPrice(price - e);
   };
 
   return (
@@ -77,10 +78,10 @@ function Cart({ flowers, deliveryTypes, filterItem }) {
                 key={e.id}
                 idx={i}
                 filterItem={filterItem}
-                PlusAll={PlusAll}
-                MinusAll={MinusAll}
-                setPrice={setPrice}
-                flowers={flowers}
+                PlusAmount={PlusAmount}
+                MinusAmount={MinusAmount}
+                PlusPrice={PlusPrice}
+                MinusPrice={MinusPrice}
               />
             ))}
           </tbody>
@@ -89,13 +90,9 @@ function Cart({ flowers, deliveryTypes, filterItem }) {
           <p>총 상품 금액 :{price.toLocaleString()}원</p>
           <p>총 상품 수량 :{amount}개</p>
           <p>총 배송비 : {delivery.toLocaleString()}원</p>
-          <p>
-            총 결제하실 금액 :{(price * amount + delivery).toLocaleString()}원
-          </p>
+          <p>총 결제하실 금액 :{(price + delivery).toLocaleString()}원</p>
         </OrderTotal>
-        <OrderBtn>
-          <button>주문하기</button>
-        </OrderBtn>
+        <OrderButton price={price} />
       </div>
     </Wrap>
   );
@@ -187,23 +184,5 @@ const OrderTotal = styled.div`
   p {
     font-size: 20px;
     font-weight: bold;
-  }
-`;
-
-const OrderBtn = styled.div`
-  margin-top: 30px;
-  text-align: right;
-
-  button {
-    width: 180px;
-    height: 50px;
-
-    background: #929292;
-    border: none;
-    border-radius: 5px;
-
-    font-size: 20px;
-    font-weight: bold;
-    color: #ffffff;
   }
 `;

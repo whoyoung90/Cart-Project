@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import CheckBox from './CheckBox';
-import Counter from './Counter';
+import Counter from '../Components/Counter';
 import styled from 'styled-components';
 import { css } from 'styled-components';
 
@@ -13,22 +13,30 @@ function CartItem({
   stock,
   filterItem,
   idx,
-  PlusAll,
-  MinusAll,
+  PlusAmount,
+  MinusAmount,
+  PlusPrice,
+  MinusPrice,
 }) {
   const [count, setCount] = useState(current_count);
 
   const MinusHandle = () => {
     setCount(count <= 1 ? 1 : count - 1);
     {
-      count <= 1 || MinusAll();
+      count <= 1 || MinusAmount();
+    }
+    {
+      count <= 1 || MinusPrice(product_price);
     }
   };
 
   const PlusHandle = () => {
     setCount(count >= stock ? stock : count + 1);
     {
-      count >= stock || PlusAll();
+      count >= stock || PlusAmount();
+    }
+    {
+      count >= stock || PlusPrice(product_price);
     }
   };
 
