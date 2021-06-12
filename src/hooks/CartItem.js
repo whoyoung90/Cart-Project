@@ -1,17 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CheckBox from './CheckBox';
+import Counter from './Counter';
 import styled from 'styled-components';
 import { css } from 'styled-components';
 
 function CartItem({
   isChecked,
-  id,
   image_url,
   product_name,
-  product_price,
   current_count,
+  product_price,
   stock,
+  filterItem,
+  idx,
+  PlusAll,
+  MinusAll,
 }) {
+  const [count, setCount] = useState(current_count);
+
+  const MinusHandle = () => {
+    setCount(count <= 1 ? 1 : count - 1);
+    {
+      count <= 1 || MinusAll();
+    }
+  };
+
+  const PlusHandle = () => {
+    setCount(count >= stock ? stock : count + 1);
+    {
+      count >= stock || PlusAll();
+    }
+  };
+
   return (
     <Item>
       <CheckColumn>
@@ -24,13 +44,14 @@ function CartItem({
         <p>{product_name}</p>
       </NameColumn>
       <CountColumn>
-        <p>{current_count}</p>
+        <p>{count}</p>
+        <Counter PlusHandle={PlusHandle} MinusHandle={MinusHandle} />
       </CountColumn>
       <PriceColumn>
         <p>{product_price}원</p>
       </PriceColumn>
       <DeleteColumn>
-        <img src={'/images/deleteIcon.png'} />
+        <img src={'/images/deleteIcon.png'} onClick={() => filterItem(idx)} />
       </DeleteColumn>
     </Item>
   );
@@ -82,8 +103,14 @@ const NameColumn = styled.td`
 `;
 
 const CountColumn = styled.td`
+  position: relative;
   width: 15%;
   ${UseMixin}
+
+  p {
+    position: relative;
+    top: 10px;
+  }
 `;
 
 const PriceColumn = styled.td`
@@ -93,4 +120,8 @@ const PriceColumn = styled.td`
 
 const DeleteColumn = styled.td`
   width: 15%;
+
+  img:hover {
+    cursor: pointer;
+  }
 `;

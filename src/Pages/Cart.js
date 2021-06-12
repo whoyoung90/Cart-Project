@@ -1,20 +1,53 @@
-import React from 'react';
-import DropDown from '../Components/DropDown';
-import CheckBox from '../Components/CheckBox';
-import CartItem from '../Components/CartItem';
-import { cartLists } from '../data';
+import React, { useState, useEffect } from 'react';
+import DropDown from '../hooks/DropDown';
+import CheckBox from '../hooks/CheckBox';
+import CartItem from '../hooks/CartItem';
 import styled from 'styled-components';
 import { css } from 'styled-components';
 
-function Cart() {
+function Cart({ flowers, deliveryTypes, filterItem }) {
+  const [delivery, setDelivery] = useState(0);
+
+  const [amount, setAmount] = useState(
+    flowers.reduce((acc, cur) => {
+      return (acc += cur.current_count);
+    }, 0)
+  );
+
+  const [price, setPrice] = useState(
+    flowers.reduce((acc, cur) => {
+      return (acc += cur.product_price * cur.current_count);
+    }, 0)
+  );
+
+  // const foo = () => {
+  //   setPrice(
+  //     flowers.reduce((acc, cur) => {
+  //       return (acc += cur.product_price * cur?.count);
+  //     }, 0)
+  //   );
+  // };
+
+  const deliverCost = el => {
+    setDelivery(Number(el.target.value));
+  };
+
+  const PlusAll = () => {
+    setAmount(amount + 1);
+  };
+
+  const MinusAll = () => {
+    setAmount(amount - 1);
+  };
+
   return (
     <Wrap>
       <Title>장바구니</Title>
       <AddressWrap>주소</AddressWrap>
       <Address>서울시 강남구 도산대로 174 7층</Address>
       <DeliverWrap>배송 방법</DeliverWrap>
-      <DropDown />
-      <ListContainer>
+      <DropDown deliveryTypes={deliveryTypes} deliverCost={deliverCost} />
+      <div>
         <ProductInfo>상품 내역</ProductInfo>
         <CartTable>
           <tbody>
@@ -38,21 +71,32 @@ function Cart() {
                 <span>상품금액</span>
               </td>
             </CartHeader>
-            {cartLists.map((el, idx) => (
-              <CartItem {...el} key={idx} />
+            {flowers.map((e, i) => (
+              <CartItem
+                {...e}
+                key={e.id}
+                idx={i}
+                filterItem={filterItem}
+                PlusAll={PlusAll}
+                MinusAll={MinusAll}
+                setPrice={setPrice}
+                flowers={flowers}
+              />
             ))}
           </tbody>
         </CartTable>
         <OrderTotal>
-          <p>총 상품 금액 : 0원</p>
-          <p>총 상품 수량 : 0개</p>
-          <p>총 배송비 : 0원</p>
-          <p>총 결제하실 금액 : 0원</p>
+          <p>총 상품 금액 :{price.toLocaleString()}원</p>
+          <p>총 상품 수량 :{amount}개</p>
+          <p>총 배송비 : {delivery.toLocaleString()}원</p>
+          <p>
+            총 결제하실 금액 :{(price * amount + delivery).toLocaleString()}원
+          </p>
         </OrderTotal>
         <OrderBtn>
           <button>주문하기</button>
         </OrderBtn>
-      </ListContainer>
+      </div>
     </Wrap>
   );
 }
@@ -91,8 +135,6 @@ const Address = styled.div`
 const DeliverWrap = styled.p`
   ${Mixin}
 `;
-
-const ListContainer = styled.div``;
 
 const ProductInfo = styled.p`
   ${Mixin}
