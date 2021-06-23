@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 function OrderButton({ price }) {
   const Notice = () => {
-    console.log(`총 상품 금액 :${price.toLocaleString()}원`);
+    alert(`총 상품 금액은 "${price.toLocaleString()}원" 입니다.`);
   };
 
   return (

@@ -56,7 +56,7 @@ function CartItem({
         <Counter PlusHandle={PlusHandle} MinusHandle={MinusHandle} />
       </CountColumn>
       <PriceColumn>
-        <p>{product_price}원</p>
+        <p>{product_price.toLocaleString()}원</p>
       </PriceColumn>
       <DeleteColumn>
         <img src={'/images/deleteIcon.png'} onClick={() => filterItem(idx)} />

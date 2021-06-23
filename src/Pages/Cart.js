@@ -45,7 +45,7 @@ function Cart({ flowers, deliveryTypes, filterItem }) {
     <Wrap>
       <Title>장바구니</Title>
       <AddressWrap>주소</AddressWrap>
-      <Address>서울시 강남구 도산대로 174 7층</Address>
+      <Address>경기도 성남시 중원구 도촌남로 134</Address>
       <DeliverWrap>배송 방법</DeliverWrap>
       <DropDown deliveryTypes={deliveryTypes} deliverCost={deliverCost} />
       <div>
